@@ -3,64 +3,23 @@
 namespace App\Http\Controllers\Api\user;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\TypeRequest;
+use App\Http\Resources\TypeResource;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Helpers\imageUploader;
 
 class TypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use ApiResponse;
+
     public function index()
     {
-        //
+        $types=Type::all();
+        $data = TypeResource::collection($types);
+        return $this->apiResponse($data,"return data successfully");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Type $type)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Type $type)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Type $type)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Type $type)
-    {
-        //
-    }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\user\DeviceController;
 use App\Http\Controllers\Api\user\RoomController;
 use App\Http\Controllers\Api\user\TypeController;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login',[AuthApiController::class,'login']);
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:user')->group(function(){
+
+    Route::get('rooms/{id}/devices',[DeviceController::class,'all_by_room']);
     Route::resource('rooms',RoomController::class);
     Route::resource('devices',DeviceController::class);
-    Route::resource('types',TypeController::class);
+    Route::get('types',[TypeController::class,'index']);
     
 });
+
+
+include __DIR__.'/adminApi.php';

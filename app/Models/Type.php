@@ -11,8 +11,13 @@ class Type extends Model
 
     protected $guarded=[];
 
+    public function getImagePathAttribute(){
+        return 'uploads/types/'.$this->image;
+    }
+    
     public function rooms(){
 
         return $this->hasMany(Room::class);
     }
+
 }

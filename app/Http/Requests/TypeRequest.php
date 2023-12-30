@@ -3,16 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class TypeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
+   
 
     /**
      * Get the validation rules that apply to the request.
@@ -21,8 +17,29 @@ class TypeRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        
+        
+        if($this->method()==='POST'){
+            return [
+                'name'=>['required'],
+                'image'=>['required','file'],
+            ];
+        }
+        elseif($this->method()==='PUT'){
+            return [
+                'name'=>'',
+                'image'=>'file',
+            ];
+        }
+        
+    }
+
+    
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'message'   => $validator->errors(),
+            'data'      => ''
+        ]));
     }
 }

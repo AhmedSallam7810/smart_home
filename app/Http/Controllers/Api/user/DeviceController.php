@@ -3,64 +3,98 @@
 namespace App\Http\Controllers\Api\user;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\DeviceRequest;
+use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Helpers\ImageUploader;
 
 class DeviceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    use ImageUploader;
+    use ApiResponse;
+
+
+    public function index(){
+        $devices=Device::where('user_id',auth()->user()->id)->get();
+        $data = DeviceResource::collection($devices);
+        return $this->apiResponse($data,"return data successfully");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function all_by_room($room_id)
     {
-        //
+        $devices=Device::where('user_id',auth()->user()->id)
+                        ->where('room_id',$room_id)->get();
+        $data = DeviceResource::collection($devices);
+        return $this->apiResponse($data,"return data successfully");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    
+    
+    public function store(DeviceRequest $request)
     {
-        //
+        $data=$request->validated();
+        
+        $data['user_id']=auth()->user()->id;
+        
+        $Device=Device::create($data);
+
+        $data = DeviceResource::make($Device);
+        
+        return $this->apiResponse($data,"stored data successfully");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Device $device)
+    
+    
+    public function show($id)
     {
-        //
+        $device = Device::where('user_id',auth()->user()->id)
+                        ->where('id',$id)->first();
+        if(!$device){
+            return $this->apiResponse('',"Device not found"); 
+        }
+        
+        $data = DeviceResource::make($device);
+        return $this->apiResponse($data,"return data successfully");
+        
+
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Device $device)
+ 
+    
+    public function update(DeviceRequest $request, $id)
     {
-        //
+
+        $device = Device::find($id);
+        if(!$device){
+            return $this->apiResponse('',"Device not found"); 
+        }
+
+        $data=$request->validated();
+
+        $device->update($data);
+
+        $data = DeviceResource::make($device);
+        return $this->apiResponse($data,"updated data successfully");
+
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Device $device)
+   
+    
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Device $device)
-    {
-        //
-    }
+        $device = Device::find($id);
+        if(!$device){
+            return $this->apiResponse('',"Device not found"); 
+        }
+        
+        $device->delete();
+        $data = DeviceResource::make($device);
+        return $this->apiResponse($data,"deleted data successfully");
+        
+   }
 }
