@@ -2,11 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Http\Helpers\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -27,4 +32,24 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof NotFoundHttpException) {
+
+            return response()->json(['data'=>'','message' => 'Route not found'], 404);
+        }
+        
+        if ($exception instanceof AuthenticationException) {
+            if ($request->expectsJson()) {
+                return new JsonResponse(['data'=>'','message' => 'Unauthenticated.'], 401);
+            }
+        }
+    
+        return parent::render($request, $exception);
+    }
+
+
+
 }
