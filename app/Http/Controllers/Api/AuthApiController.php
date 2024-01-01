@@ -11,21 +11,21 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthApiController extends Controller
 {
-    // public function register(RegisterRequest $request){
-    //     $data=$request->validated();
-    //     $data['password']=Hash::make();
-    //     $user=User::create($data);
-    //     $token=$user->createToken('personal access token')->plainTextToken;
+    public function register(RegisterRequest $request){
+        $data=$request->validated();
+        $data['password']=Hash::make( $data['password']);
+        $user=User::create($data);
+        $token=$user->createToken('personal access token')->plainTextToken;
 
-    //     return response()->json([
-    //         'status' => true,
-    //         'code' => 200,
-    //         'data' => $user,
-    //         'token' => $token
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $user,
+            'token' => $token
 
-    //     ]);
+        ]);
 
-    // } 
+    } 
     
     
     public function login(LoginRequest $request){

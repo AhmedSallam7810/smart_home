@@ -23,7 +23,7 @@ class DeviceController extends Controller
         return $this->apiResponse($data,"return data successfully");
     }
 
-    public function all_by_room($room_id)
+    public function allByRoom($room_id)
     {
         $devices=Device::where('user_id',auth()->user()->id)
                         ->where('room_id',$room_id)->get();

@@ -10,8 +10,9 @@ Route::prefix('admin')->group(function(){
         return "teeest";
     });
     Route::post('login',[AuthApiController::class,'login']);
+    Route::resource('types',TypeController::class);
+
     Route::middleware('auth:admin')->group(function(){
-        Route::resource('types',TypeController::class);
     });
 
 

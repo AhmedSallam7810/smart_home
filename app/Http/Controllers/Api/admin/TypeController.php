@@ -10,6 +10,7 @@ use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helpers\imageUploader;
+use App\Models\Admin;
 
 class TypeController extends Controller
 {
@@ -20,7 +21,8 @@ class TypeController extends Controller
     {
         $types=Type::all();
         $data = TypeResource::collection($types);
-        return $this->apiResponse($data,"return data successfully");
+        // return $this->apiResponse($data,"return data successfully");
+        return view('Admin.layouts.index');
     }
 
 

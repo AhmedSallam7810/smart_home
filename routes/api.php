@@ -23,10 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('register',[AuthApiController::class,'register']);
 Route::post('login',[AuthApiController::class,'login']);
 Route::middleware('auth:user')->group(function(){
 
-    Route::get('rooms/{id}/devices',[DeviceController::class,'all_by_room']);
+    Route::get('rooms/{id}/devices',[DeviceController::class,'allByRoom']);
     Route::resource('rooms',RoomController::class);
     Route::resource('devices',DeviceController::class);
     Route::get('types',[TypeController::class,'index']);
