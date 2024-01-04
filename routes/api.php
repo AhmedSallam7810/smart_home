@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\user\TypeController;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\user\ESPController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,16 +24,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register',[AuthApiController::class,'register']);
-Route::post('login',[AuthApiController::class,'login']);
-Route::middleware('auth:user')->group(function(){
+Route::post('register', [AuthApiController::class, 'register']);
+Route::post('login', [AuthApiController::class, 'login']);
+Route::middleware('auth:user')->group(function () {
 
-    Route::get('rooms/{id}/devices',[DeviceController::class,'allByRoom']);
-    Route::resource('rooms',RoomController::class);
-    Route::resource('devices',DeviceController::class);
-    Route::get('types',[TypeController::class,'index']);
-    
+    Route::get('rooms/{id}/devices', [DeviceController::class, 'allByRoom']);
+    Route::resource('rooms', RoomController::class);
+    Route::resource('devices', DeviceController::class);
+    Route::get('types', [TypeController::class, 'index']);
+
 });
 
 
-include __DIR__.'/adminApi.php';
+//---------------------- ESP Integration ------------------------------------------------------------------------------------------------------
+
+Route::get('user/{user_id}/room/{room_id}', [ESPController::class, 'getAllDeviceInRoom']);
+Route::post('user/{user_id}/room/{room_id}', [ESPController::class, 'changeDeviceStatus']);
+Route::post('user/{user_id}/room/{room_id}/devices', [ESPController::class, 'changeDeviceAllStatus']);
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+
+include __DIR__ . '/adminApi.php';

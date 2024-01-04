@@ -14,9 +14,19 @@ return new class extends Migration
         Schema::create('types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
+
+        \App\Models\Type::create([
+            'name'=>'Living'
+        ]);
+        \App\Models\Type::create([
+            'name'=>'Sleeping'
+        ]);
+        \App\Models\Type::create([
+            'name'=>'Kitchen'
+        ]);
     }
 
     /**

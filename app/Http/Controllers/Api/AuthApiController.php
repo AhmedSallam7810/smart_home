@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthApiController extends Controller
 {
-    public function register(RegisterRequest $request){
-        $data=$request->validated();
-        $data['password']=Hash::make( $data['password']);
-        $user=User::create($data);
-        $token=$user->createToken('personal access token')->plainTextToken;
+    public function register(RegisterRequest $request)
+    {
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create($data);
+        $token = $user->createToken('personal access token')->plainTextToken;
 
         return response()->json([
             'status' => true,
@@ -24,15 +24,12 @@ class AuthApiController extends Controller
             'token' => $token
 
         ]);
+    }
 
-    } 
-    
-    
-    public function login(LoginRequest $request){
-
-        $user=User::where('email',$request->email)->first();
-
-        if(!$user){
+    public function login(LoginRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
             return response()->json([
                 'status' => false,
                 'code' => 400,
@@ -42,9 +39,8 @@ class AuthApiController extends Controller
             ]);
         }
 
-        if(Hash::check($request->password,$user->password)){
-
-            $token=$user->createToken('personal access token')->plainTextToken;
+        if (Hash::check($request->email, $user->password)) {
+            $token = $user->createToken('personal access token')->plainTextToken;
             return response()->json([
                 'status' => true,
                 'code' => 200,
@@ -52,8 +48,7 @@ class AuthApiController extends Controller
                 'token' => $token
 
             ]);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => false,
                 'code' => 400,
@@ -62,12 +57,5 @@ class AuthApiController extends Controller
 
             ]);
         }
-
     }
-
-
-
-
-
-
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('phone')->nullable()->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -26,7 +27,7 @@ return new class extends Migration
         User::create([
             'name'=>'user',
             'email'=>'user@gmail.com',
-            'password'=>Hash::make('password') 
+            'password'=>Hash::make('password')
         ]);
     }
 
