@@ -19,8 +19,8 @@ class ESPController extends Controller
     public function changeDeviceStatus(Request $request, $user_id, $room_id)
     {
         $rdata = $request->all();
-        $device = Device::where('room_id', $room_id)->where('id', $rdata->device_id)->first();
-        $device->update(['status' => $rdata->status]);
+        $device = Device::where('room_id', $room_id)->where('id', $rdata['device_id'])->first();
+        $device->update(['status' => $rdata['status']]);
         $devices = Device::where('room_id', $room_id)->get();
         $data = DeviceResource::collection($devices);
         return response()->json(['data' => $data]);
@@ -31,11 +31,9 @@ class ESPController extends Controller
         $rdata = $request->all();
 
         foreach ($rdata['devices'] as $row) {
-            $device = Device::where('room_id', $room_id)->where('id', $rdata->device_id)->first();
-            $device->update(['status' => $row->status]);
+            $device = Device::where('room_id', $room_id)->where('id', $row['device_id'])->first();
+            $device->update(['status' => $row['status']]);
         }
-        $room = Room::where('id', $room_id)->first();
-        $room->update($rdata);
         $devices = Device::where('room_id', $room_id)->get();
         $data = DeviceResource::collection($devices);
         return response()->json(['data' => $data]);
