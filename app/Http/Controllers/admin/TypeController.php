@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
@@ -20,33 +20,32 @@ class TypeController extends Controller
     public function index()
     {
         $types=Type::all();
-        $data = TypeResource::collection($types);
-        // return $this->apiResponse($data,"return data successfully");
-        return view('Admin.layouts.index');
+
+        return view('Admin.types.index',compact('types'));
     }
 
 
-    
+
     public function show($id)
     {
         $type = Type::find($id);
         if(!$type){
-            return $this->apiResponse('',"Type not found"); 
+            return $this->apiResponse('',"Type not found");
         }
-        
+
         $data = TypeResource::make($type);
         return $this->apiResponse($data,"return data successfully");
-        
+
 
 
     }
 
-    
-    
+
+
     public function store(TypeRequest $request)
     {
         $data=$request->validated();
-        
+
         $image=$request->file('image');
         if($image){
             $image_name=$this->storeimage($image,'types');
@@ -58,27 +57,27 @@ class TypeController extends Controller
         $type=Type::create($data);
 
         $data = TypeResource::make($type);
-        
+
         return $this->apiResponse($data,"stored data successfully");
     }
 
-    
-    
 
- 
-    
+
+
+
+
     public function update(TypeRequest $request, $id)
     {
 
         $type = Type::find($id);
         if(!$type){
-            return $this->apiResponse('',"Type not found"); 
+            return $this->apiResponse('',"Type not found");
         }
 
         $updated_data=$request->validated();
 
         $image=$request->file('image');
-        
+
         if($image){
             $image_name=$this->updateimage($image,'types',$type->image);
             $updated_data['image']=$image_name;
@@ -93,22 +92,22 @@ class TypeController extends Controller
 
     }
 
-   
-    
+
+
     public function destroy($id)
     {
         $type = Type::find($id);
         if(!$type){
-            return $this->apiResponse('',"Type not found"); 
+            return $this->apiResponse('',"Type not found");
         }
 
         if($type->image!='default.png'){
             $this->deleteimage($type->image,'types');
         }
-        
+
         $type->delete();
         $data = TypeResource::make($type);
         return $this->apiResponse($data,"deleted data successfully");
-        
+
    }
 }

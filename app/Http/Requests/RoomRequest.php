@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\Validator;
 
 class RoomRequest extends FormRequest
 {
-    
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -18,8 +18,8 @@ class RoomRequest extends FormRequest
      */
     public function rules(): array
     {
-        
-        
+
+
         if($this->method()==='POST'){
             return [
                 'name'=>['required'],
@@ -28,14 +28,14 @@ class RoomRequest extends FormRequest
         }
         elseif($this->method()==='PUT'){
             return [
-                'name'=>'',
-                'type_id'=>'',
+                'name'=>'nullable',
+                'type_id'=>'nullable',
             ];
         }
-        
+
     }
 
-    
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([

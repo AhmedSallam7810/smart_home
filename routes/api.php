@@ -20,18 +20,26 @@ use App\Http\Controllers\Api\user\ESPController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:user')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register', [AuthApiController::class, 'register']);
-Route::post('login', [AuthApiController::class, 'login']);
+//-----------------------mobile API-----------------------------------------------------------------------------------------------------
+
+Route::group(['middleware'=>'guest'],function(){
+
+    Route::post('register', [AuthApiController::class, 'register']);
+    Route::post('login', [AuthApiController::class, 'login']);
+});
+
 Route::middleware('auth:user')->group(function () {
 
-    Route::get('rooms/{id}/devices', [DeviceController::class, 'allByRoom']);
     Route::resource('rooms', RoomController::class);
-    Route::resource('devices', DeviceController::class);
+    Route::resource('room/{id}/devices', DeviceController::class)->only(['index','store']);
+    Route::resource('devices', DeviceController::class)->except(['index','store']);
+    Route::get('all-devices', [DeviceController::class, 'getAllDevices']);
     Route::get('types', [TypeController::class, 'index']);
+
 
 });
 
@@ -45,4 +53,3 @@ Route::post('user/{user_id}/room/{room_id}/devices', [ESPController::class, 'cha
 //----------------------------------------------------------------------------------------------------------------------------
 
 
-include __DIR__ . '/adminApi.php';

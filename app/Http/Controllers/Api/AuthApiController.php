@@ -39,7 +39,7 @@ class AuthApiController extends Controller
             ]);
         }
 
-        if (Hash::check($request->email, $user->password)) {
+        if (Hash::check($request->password, $user->password)) {
             $token = $user->createToken('personal access token')->plainTextToken;
             return response()->json([
                 'status' => true,
