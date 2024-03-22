@@ -33,12 +33,12 @@ class RoomController extends Controller
         $room = Room::create($data);
         // create room device
 
-        for ($i = 1; $i <= 6; $i++) {
-            $device_data['user_id'] = auth()->user()->id;
-            $device_data['room_id'] = $room->id;
-            $device_data['name'] = "Switch " . $i;
-            $Device = Device::create($device_data);
-        }
+        // for ($i = 1; $i <= 6; $i++) {
+        //     $device_data['user_id'] = auth()->user()->id;
+        //     $device_data['room_id'] = $room->id;
+        //     $device_data['name'] = "Switch " . $i;
+        //     $Device = Device::create($device_data);
+        // }
 
         $data = RoomResource::make($room);
 
@@ -64,9 +64,15 @@ class RoomController extends Controller
     public function update(RoomRequest $request, $id)
     {
 
-        $Room = Room::find($id);
-        if (!$Room) {
-            return $this->apiResponse('', "Room not found");
+        $room = Room::find($id);
+        if (!$room) {
+            return $this->apiResponse('', "room not found");
+        }
+
+        if($room->user_id!==auth('user')->user->id){
+
+            return $this->apiResponse('', "not have permissions");
+
         }
 
         $updated_data = $request->validated();
@@ -74,14 +80,14 @@ class RoomController extends Controller
         $icon = $request->file('icon');
 
         if ($icon) {
-            $icon_name = $this->updateImage($icon, 'rooms', $Room->icon);
+            $icon_name = $this->updateImage($icon, 'rooms', $room->icon);
             $updated_data['icon'] = $icon_name;
         }
 
 
-        $Room->update($updated_data);
+        $room->update($updated_data);
 
-        $data = RoomResource::make($Room);
+        $data = RoomResource::make($room);
         return $this->apiResponse($data, "updated data successfully");
 
 
@@ -90,17 +96,23 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
-        $Room = Room::find($id);
-        if (!$Room) {
-            return $this->apiResponse('', "Room not found");
+        $room = Room::find($id);
+        if (!$room) {
+            return $this->apiResponse('', "room not found");
         }
 
-        if ($Room->icon != 'default.png') {
-            $this->deleteImage($Room->icon, 'rooms');
+        if($room->user_id!==auth('user')->user->id){
+
+            return $this->apiResponse('', "not have permissions");
+
         }
 
-        $Room->delete();
-        $data = RoomResource::make($Room);
+        if ($room->icon != 'default.png') {
+            $this->deleteImage($room->icon, 'rooms');
+        }
+
+        $room->delete();
+        $data = RoomResource::make($room);
         return $this->apiResponse($data, "deleted data successfully");
 
     }

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 
 class DeviceRequest extends FormRequest
 {
-    
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -17,26 +17,24 @@ class DeviceRequest extends FormRequest
      */
     public function rules(): array
     {
-        
-        
+
+
         if($this->method()==='POST'){
             return [
                 'name'=>['required'],
-                'room_id'=>['required'],
-                
+
             ];
         }
         elseif($this->method()==='PUT'){
             return [
-                'name'=>'',
-                'room_id'=>'',
-                
+                'name'=>'nullable',
+
             ];
         }
-        
+
     }
 
-    
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
