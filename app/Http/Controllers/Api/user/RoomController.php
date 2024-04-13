@@ -69,7 +69,7 @@ class RoomController extends Controller
             return $this->apiResponse('', "room not found");
         }
 
-        if($room->user_id!==auth('user')->user->id){
+        if($room->user_id!==auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
@@ -101,7 +101,7 @@ class RoomController extends Controller
             return $this->apiResponse('', "room not found");
         }
 
-        if($room->user_id!==auth('user')->user->id){
+        if($room->user_id!==auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
