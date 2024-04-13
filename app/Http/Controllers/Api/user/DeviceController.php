@@ -25,7 +25,7 @@ class DeviceController extends Controller
             return $this->apiResponse('', "room not found");
         }
 
-        if($room->user_id!==auth('user')->user()->id){
+        if($room->user_id!=auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
@@ -53,7 +53,7 @@ class DeviceController extends Controller
             return $this->apiResponse('', "room not found");
         }
 
-        if($room->user_id!==auth('user')->user()->id){
+        if($room->user_id!=auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
@@ -82,7 +82,7 @@ class DeviceController extends Controller
             return $this->apiResponse('',"Device not found");
         }
 
-        if($device->user_id!==auth('user')->user()->id){
+        if($device->user_id!=auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
@@ -106,7 +106,7 @@ class DeviceController extends Controller
             return $this->apiResponse('',"Device not found");
         }
 
-        if($device->user_id!==auth('user')->user()->id){
+        if($device->user_id!=auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
@@ -132,7 +132,7 @@ class DeviceController extends Controller
             return $this->apiResponse('',"Device not found");
         }
 
-        if($device->user_id!==auth('user')->user()->id){
+        if($device->user_id!=auth('user')->user()->id){
 
             return $this->apiResponse('', "not have permissions");
 
