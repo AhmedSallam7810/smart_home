@@ -17,7 +17,14 @@ class TypeController extends Controller
 
     public function index()
     {
-        $types=Type::all();
+        $types=Type::where('category',1)->get();
+        $data = TypeResource::collection($types);
+        return $this->apiResponse($data,"return data successfully");
+    }
+
+    public function getDeviceTypes()
+    {
+        $types=Type::where('category',2)->get();
         $data = TypeResource::collection($types);
         return $this->apiResponse($data,"return data successfully");
     }

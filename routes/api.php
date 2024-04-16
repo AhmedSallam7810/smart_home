@@ -39,6 +39,7 @@ Route::middleware('auth:user')->group(function () {
     Route::resource('devices', DeviceController::class)->except(['index','store']);
     Route::get('all-devices', [DeviceController::class, 'getAllDevices']);
     Route::get('types', [TypeController::class, 'index']);
+    Route::get('types/devices', [TypeController::class, 'getDeviceTypes']);
 
 
 });

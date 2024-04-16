@@ -12,9 +12,13 @@ class Type extends Model
     protected $guarded=[];
 
     public function getImagePathAttribute(){
-        return 'uploads/types/'.$this->image;
+        if($this->category==1){
+
+            return 'uploads/types/'.($this->image?$this->image:"default.png");
+        }
+        return 'uploads/types/'.($this->image?$this->image:"device_default.png");
     }
-    
+
     public function rooms(){
 
         return $this->hasMany(Room::class);

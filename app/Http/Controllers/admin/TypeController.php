@@ -39,6 +39,15 @@ class TypeController extends Controller
 
 
     }
+    public function create()
+    {
+
+        $types=Type::all();
+
+        return view('Admin.types.create',compact('types'));
+
+
+    }
 
 
 
@@ -62,7 +71,15 @@ class TypeController extends Controller
     }
 
 
+    public function edit($id)
+    {
 
+        $type=Type::find($id);
+
+        return view('Admin.types.edit',compact('type'));
+
+
+    }
 
 
 

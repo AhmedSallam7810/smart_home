@@ -14,18 +14,34 @@ return new class extends Migration
         Schema::create('types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('ar_name')->nullable();
+            $table->integer('category')->nullable();
+            $table->boolean('show_in_app')->default(1);
             $table->string('image')->nullable();
             $table->timestamps();
         });
 
         \App\Models\Type::create([
-            'name'=>'Living'
+            'name'=>'Living',
+            'category'=>1
         ]);
         \App\Models\Type::create([
-            'name'=>'Sleeping'
+            'name'=>'Sleeping',
+            'category'=>1
+        ]);
+
+        \App\Models\Type::create([
+            'name'=>'Kitchen',
+            'category'=>1
         ]);
         \App\Models\Type::create([
-            'name'=>'Kitchen'
+            'name'=>'lamp',
+            'category'=>2
+        ]);
+
+        \App\Models\Type::create([
+            'name'=>'air conditioner',
+            'category'=>2
         ]);
     }
 
