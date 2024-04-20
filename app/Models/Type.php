@@ -14,9 +14,9 @@ class Type extends Model
     public function getImagePathAttribute(){
         if($this->category==1){
 
-            return 'uploads/types/'.($this->image?$this->image:"default.png");
+            return 'uploads/types/'.($this->image?$this->image:"default.jpg");
         }
-        return 'uploads/types/'.($this->image?$this->image:"device_default.png");
+        return 'uploads/types/'.($this->image?$this->image:"device_default.jpg");
     }
 
     public function rooms(){

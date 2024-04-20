@@ -51,7 +51,7 @@ class RoomController extends Controller
         $Room = Room::where('user_id', auth()->user()->id)
             ->where('id', $id)->first();
         if (!$Room) {
-            return $this->apiResponse('', "Room not found");
+            return $this->apiResponse404('', "Room not found");
         }
 
         $data = RoomResource::make($Room);
@@ -66,12 +66,12 @@ class RoomController extends Controller
 
         $room = Room::find($id);
         if (!$room) {
-            return $this->apiResponse('', "room not found");
+            return $this->apiResponse404('', "room not found");
         }
 
         if($room->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 
@@ -98,12 +98,12 @@ class RoomController extends Controller
     {
         $room = Room::find($id);
         if (!$room) {
-            return $this->apiResponse('', "room not found");
+            return $this->apiResponse404('', "room not found");
         }
 
         if($room->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 

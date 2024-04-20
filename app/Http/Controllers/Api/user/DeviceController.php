@@ -22,12 +22,12 @@ class DeviceController extends Controller
         $room=Room::where('id',$room_id)->first();
 
         if (!$room) {
-            return $this->apiResponse('', "room not found");
+            return $this->apiResponse404('', "room not found");
         }
 
         if($room->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 
@@ -50,12 +50,12 @@ class DeviceController extends Controller
         $room=Room::where('id',$room_id)->first();
 
         if (!$room) {
-            return $this->apiResponse('', "room not found");
+            return $this->apiResponse404('', "room not found");
         }
 
         if($room->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 
@@ -80,12 +80,12 @@ class DeviceController extends Controller
         $device = Device::where('id',$device_id)->first();
 
         if(!$device){
-            return $this->apiResponse('',"Device not found");
+            return $this->apiResponse404('',"Device not found");
         }
 
         if($device->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 
@@ -104,12 +104,12 @@ class DeviceController extends Controller
         $device = Device::where('id',$device_id)->first();
 
         if(!$device){
-            return $this->apiResponse('',"Device not found");
+            return $this->apiResponse404('',"Device not found");
         }
 
         if($device->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 
@@ -130,12 +130,12 @@ class DeviceController extends Controller
         $device = Device::where('id',$device_id)->first();
 
         if(!$device){
-            return $this->apiResponse('',"Device not found");
+            return $this->apiResponse404('',"Device not found");
         }
 
         if($device->user_id!=auth('user')->user()->id){
 
-            return $this->apiResponse('', "not have permissions");
+            return $this->apiResponse404('', "not have permissions");
 
         }
 

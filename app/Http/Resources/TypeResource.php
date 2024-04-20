@@ -14,10 +14,20 @@ class TypeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data=[
             'id'=>$this->id,
-            'name'=>$this->name,
-            'image'=>url($this->image_path)
+            'en_name'=>$this->en_name,
+            'ar_name'=>$this->ar_name,
         ];
+
+        if($this->category==1){
+            $data['image']=url($this->image_path);
+        }
+        else{
+            $data['icon']=url($this->icon);
+
+        }
+
+        return $data;
     }
 }
