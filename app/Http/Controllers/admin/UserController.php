@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $users=User::simplePaginate(10);
 
-        return view('Admin.users.index',compact('users'));
+        return view('admin.users.index',compact('users'));
     }
 
 

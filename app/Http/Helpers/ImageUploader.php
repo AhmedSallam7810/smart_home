@@ -4,7 +4,7 @@ namespace App\Http\Helpers;
 
 use Illuminate\Support\Facades\Storage;
 
-trait ImageUploader{
+trait imageUploader{
 
   public function storeImage($image_file,$folder){
 
@@ -18,10 +18,10 @@ trait ImageUploader{
 
 
   public function updateImage($image_file,$folder,$old_image_name){
-      
+
       $this->deleteImage($old_image_name,$folder);
       return $this->storeImage($image_file,$folder);
   }
 
-  
+
 }

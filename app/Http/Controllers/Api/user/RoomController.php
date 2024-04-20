@@ -10,11 +10,11 @@ use App\Models\Device;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Helpers\ImageUploader;
+use App\Http\Helpers\imageUploader  ;
 
 class RoomController extends Controller
 {
-    use ImageUploader;
+    use imageUploader;
     use ApiResponse;
 
     public function index()
