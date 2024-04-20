@@ -44,7 +44,7 @@ class UserController extends Controller
 
 //         $users=user::all();
 
-//         return view('Admin.users.create',compact('users'));
+//         return view('admin.users.create',compact('users'));
 
 
 //     }
@@ -76,7 +76,7 @@ class UserController extends Controller
 
 //         $user=user::find($id);
 
-//         return view('Admin.users.edit',compact('user'));
+//         return view('admin.users.edit',compact('user'));
 
 
 //     }

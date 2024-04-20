@@ -21,7 +21,7 @@ class TypeController extends Controller
     {
         $types=Type::all();
 
-        return view('Admin.types.index',compact('types'));
+        return view('admin.types.index',compact('types'));
     }
 
 
@@ -44,7 +44,7 @@ class TypeController extends Controller
 
         $types=Type::all();
 
-        return view('Admin.types.create',compact('types'));
+        return view('admin.types.create',compact('types'));
 
 
     }
@@ -84,7 +84,7 @@ class TypeController extends Controller
 
         $type=Type::find($id);
 
-        return view('Admin.types.edit',compact('type'));
+        return view('admin.types.edit',compact('type'));
 
 
     }
