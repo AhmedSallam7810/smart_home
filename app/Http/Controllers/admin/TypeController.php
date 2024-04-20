@@ -9,12 +9,12 @@ use App\Http\Resources\TypeResource;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Helpers\imageUploader;
+use App\Http\Helpers\ImageUploader;
 use App\Models\Admin;
 
 class TypeController extends Controller
 {
-    use imageUploader;
+    use ImageUploader;
     use ApiResponse;
 
     public function index()
