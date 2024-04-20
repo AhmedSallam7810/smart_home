@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 
 class TypeRequest extends FormRequest
 {
-   
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -17,24 +17,29 @@ class TypeRequest extends FormRequest
      */
     public function rules(): array
     {
-        
-        
+
+
         if($this->method()==='POST'){
             return [
-                'name'=>['required'],
-                'image'=>['required','file'],
+                'en_name'=>['required'],
+                'ar_name'=>['required'],
+                'image'=>['file'],
+                'show_in_app'=>''
             ];
         }
         elseif($this->method()==='PUT'){
             return [
-                'name'=>'',
-                'image'=>'file',
+                'en_name'=>['required'],
+                'ar_name'=>['required'],
+                'image'=>['file'],
+                'show_in_app'=>''
+
             ];
         }
-        
+
     }
 
-    
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([

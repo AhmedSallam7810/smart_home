@@ -19,6 +19,11 @@
 </div>
 </div>
 
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 <section class="content">
         <div class="text-right mb-3"><a class="btn btn-secondary px-4 " href="{{route('admin.types.create')}}">
@@ -51,13 +56,13 @@
                 <tr>
                     <th style="vertical-align: middle;">{{$loop->index+1}}</th>
                     <td style="vertical-align: middle;" class="w-10">
-                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/sheep-3.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                        <img src="{{url($type->image_path)}}" class="img-fluid img-thumbnail" alt="Sheep">
                     </td >
-                    <td style="vertical-align: middle;">{{$type->name}}</td>
-                    <td style="vertical-align: middle;">Otto</td>
+                    <td style="vertical-align: middle;">{{$type->en_name}}</td>
+                    <td style="vertical-align: middle;">{{$type->ar_name}}</td>
                     <td style="vertical-align: middle; text-align: center;">
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch{{$type->id}}" checked>
+                            <input type="checkbox" class="custom-control-input" id="customSwitch{{$type->id}}" {{$type->show_in_app?'checked':''}}>
                             <label class="custom-control-label" for="customSwitch{{$type->id}}"></label>
                             </div>
                     </td>

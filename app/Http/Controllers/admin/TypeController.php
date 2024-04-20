@@ -54,6 +54,13 @@ class TypeController extends Controller
     public function store(TypeRequest $request)
     {
         $data=$request->validated();
+        $data['category']=1;
+        if($request->show_in_app){
+            $data['show_in_app']=1;
+        }
+        else{
+            $data['show_in_app']=0;
+        }
 
         $image=$request->file('image');
         if($image){
@@ -61,13 +68,14 @@ class TypeController extends Controller
             $data['image']=$image_name;
         }
         else{
-            $data['image']='default.png';
+            $data['image']='default.jpg';
         }
+
+
         $type=Type::create($data);
 
-        $data = TypeResource::make($type);
 
-        return $this->apiResponse($data,"stored data successfully");
+        return redirect()->route('admin.types.index')->with('success','IT WORKS!');;
     }
 
 
@@ -87,9 +95,9 @@ class TypeController extends Controller
     {
 
         $type = Type::find($id);
-        if(!$type){
-            return $this->apiResponse('',"Type not found");
-        }
+        // if(!$type){
+        //     return $this->apiResponse('',"Type not found");
+        // }
 
         $updated_data=$request->validated();
 
@@ -100,11 +108,17 @@ class TypeController extends Controller
             $updated_data['image']=$image_name;
         }
 
+        if($request->show_in_app){
+            $updated_data['show_in_app']=1;
+        }
+        else{
+            $updated_data['show_in_app']=0;
+        }
 
         $type->update($updated_data);
 
-        $data = TypeResource::make($type);
-        return $this->apiResponse($data,"updated data successfully");
+        return redirect()->route('admin.types.index')->with('success','IT WORKS!');;
+
 
 
     }
@@ -114,17 +128,18 @@ class TypeController extends Controller
     public function destroy($id)
     {
         $type = Type::find($id);
-        if(!$type){
-            return $this->apiResponse('',"Type not found");
-        }
+        // if(!$type){
+        //     return $this->apiResponse('',"Type not found");
+        // }
 
-        if($type->image!='default.png'){
+        if($type->image!='default.jpg'){
             $this->deleteimage($type->image,'types');
         }
 
         $type->delete();
-        $data = TypeResource::make($type);
-        return $this->apiResponse($data,"deleted data successfully");
+
+        return redirect()->route('admin.types.index')->with('success','IT WORKS!');;
+
 
    }
 }

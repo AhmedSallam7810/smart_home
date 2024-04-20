@@ -26,7 +26,9 @@
 <section class="content">
 
     <div class="container-fluit m-3">
-        <form class="card card-secondary">
+        <form class="card card-secondary" action="{{route('admin.types.update',$type->id)}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('put')
 
             <div class="card-header">
                 <h3 class="card-title"></h3>
@@ -38,19 +40,19 @@
                         <div class="col-6">
 
                             <label >English Name</label>
-                            <input type="text" id="inputName" value={{$type->name}} class="form-control">
+                            <input type="text" id="inputName" name='en_name' value={{$type->en_name}} class="form-control">
                         </div>
 
                         <div class="col-6">
 
                             <label >Arabic Name</label>
-                            <input type="text" id="inputName" value={{$type->name}} class="form-control">
+                            <input type="text" id="inputName" name='ar_name' value={{$type->ar_name}} class="form-control">
                         </div>
 
                     </div>
 
 
-                        <img id="preview"  alt="Selected Image" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/sheep-3.jpg"
+                        <img id="preview"  alt="Selected Image" src="{{url($type->image_path)}}"
                          class="img-fluid img-thumbnail  m-5" style="width: 20%;height:20%"  alt="Sheep">
 
                         <div class="custom-file col-6 mx-5">
@@ -59,7 +61,7 @@
                         </div>
 
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+                            <input type="checkbox" class="custom-control-input" name="show_in_app" id="customSwitch1" {{$type->show_in_app?'checked':''}}>
                             <label class="custom-control-label" for="customSwitch1">Show in App</label>
                         </div>
 
@@ -71,7 +73,7 @@
 
                     <div class="card-footer ">
                         <div class="d-flex justify-content-between">
-                        <button  type="submit" class="btn btn-success">Save</button>
+                        <button  type="submit" class="btn btn-info">Update</button>
                         <a href="{{route('admin.types.index')}}" class="btn btn-danger">Cancel</a>
                         </div>
 

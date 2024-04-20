@@ -45,7 +45,7 @@ class DeviceController extends Controller
 
 
 
-    public function store(DeviceRequest $request, $room_id)
+    public function store(Request $request, $room_id)
     {
         $room=Room::where('id',$room_id)->first();
 
@@ -61,6 +61,7 @@ class DeviceController extends Controller
 
         $data['name']=$request->name;
         $data['room_id']=$room_id;
+        $data['type_id']=$request->type_id;
         $data['user_id']=auth('user')->user()->id;
 
         $Device=Device::create($data);
