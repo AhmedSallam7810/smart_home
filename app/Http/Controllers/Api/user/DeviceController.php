@@ -63,6 +63,12 @@ class DeviceController extends Controller
         $data['room_id']=$room_id;
         $data['type_id']=$request->type_id;
         $data['user_id']=auth('user')->user()->id;
+        if($request->status){
+            $data['status']=intval($request->status);
+        }
+        else{
+            $data['status']=0;
+        }
 
         $Device=Device::create($data);
 
@@ -98,7 +104,7 @@ class DeviceController extends Controller
 
 
 
-    public function update(DeviceRequest $request, $device_id)
+    public function update(Request $request, $device_id)
     {
 
         $device = Device::where('id',$device_id)->first();
@@ -113,7 +119,12 @@ class DeviceController extends Controller
 
         }
 
-        $data=$request->validated();
+        $data=$request->all();
+
+        if($request->has('status')){
+            $data['status']=intval($request->status);
+        }
+
 
         $device->update($data);
 

@@ -19,7 +19,7 @@ class TypeController extends Controller
 
     public function index()
     {
-        $types=Type::all();
+        $types=Type::where('category',1)->get();
 
         return view('admin.types.index',compact('types'));
     }

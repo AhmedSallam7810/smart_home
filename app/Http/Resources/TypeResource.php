@@ -24,7 +24,7 @@ class TypeResource extends JsonResource
             $data['image']=url($this->image_path);
         }
         else{
-            $data['icon']=url($this->icon);
+            $data['icon']=$this->icon;
 
         }
 
