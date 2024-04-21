@@ -36,7 +36,7 @@ class AuthApiController extends Controller
                 'message' => __('auth.email_not_found'),
                 'data' => null
 
-            ]);
+            ],400);
         }
 
         if (Hash::check($request->password, $user->password)) {

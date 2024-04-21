@@ -17,7 +17,7 @@ trait ApiResponse{
         $arr['code']=404;
         $arr ['data'] = $data;
         $arr['message'] = $message;
-        return response()->json($arr);
+        return response()->json($arr,404);
       }
 
 
