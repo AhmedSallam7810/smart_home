@@ -23,7 +23,7 @@ class DeviceResource extends JsonResource
             'type_id'=>$this->type_id,
             'type_en_name'=>$this->type->en_name,
             'type_ar_name'=>$this->type->ar_name,
-            'type_icon'=>url($this->type->icon),
+            'type_icon'=>$this->type->icon,
         ];
     }
 }
