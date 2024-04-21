@@ -9,6 +9,10 @@ class Room extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    protected $casts = [
+        'user_id' => 'integer',
+        'type_id' => 'integer',
+    ];
 
     public function devices(){
 
