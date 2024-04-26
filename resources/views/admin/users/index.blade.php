@@ -7,7 +7,8 @@
     <div class="container-fluid">
     <div class="row mb-2">
     <div class="col-sm-6">
-    <h1 class="m-0">Users</h1>
+    <span class="m-0 h2">Users </span>
+    <span class="h5">({{$users->count()}})</span>
     </div>
     <div class="col-sm-6">
     <ol class="breadcrumb float-sm-right">
@@ -35,7 +36,8 @@
                 <th class="col-1">#</th>
                 <th class="col-2">name</th>
                 <th class="col-2">email</th>
-                <th class="col-2">phone</th>
+                <th class="col-2">rooms</th>
+                <th class="col-2">devices</th>
                 {{-- <th class="col-2">English Name</th>
                 <th class="col-2">Arabic Name</th>
                 <th class="col-2">Show in App</th>
@@ -52,7 +54,8 @@
                     </td > --}}
                     <td style="vertical-align: middle;">{{$user->name}}</td>
                     <td style="vertical-align: middle;">{{$user->email}}</td>
-                    <td style="vertical-align: middle;">{{$user->phone}}</td>
+                    <td style="vertical-align: middle;">{{count($user->rooms)}}</td>
+                    <td style="vertical-align: middle;">{{count($user->devices)}}</td>
                     {{--<td style="vertical-align: middle;">Otto</td>
                     <td style="vertical-align: middle; text-align: center;">
                         <div class="custom-control custom-switch">

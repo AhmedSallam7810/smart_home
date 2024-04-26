@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\user;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Helpers\ImageUploader;
+use App\Http\Resources\DeviceESPResource;
 use App\Http\Resources\DeviceResource;
 use App\Models\Device;
 use App\Models\Room;
@@ -22,7 +23,7 @@ class ESPController extends Controller
         $device = Device::where('room_id', $room_id)->where('id', $rdata['device_id'])->first();
         $device->update(['status' => $rdata['status']]);
         $devices = Device::where('room_id', $room_id)->get();
-        $data = DeviceResource::collection($devices);
+        $data = DeviceESPResource::collection($devices);
         return response()->json(['data' => $data]);
     }
 
@@ -35,14 +36,14 @@ class ESPController extends Controller
             $device->update(['status' => $row['status']]);
         }
         $devices = Device::where('room_id', $room_id)->get();
-        $data = DeviceResource::collection($devices);
+        $data = DeviceESPResource::collection($devices);
         return response()->json(['data' => $data]);
     }
 
     public function getAllDeviceInRoom($user_id, $room_id)
     {
         $devices = Device::where('room_id', $room_id)->get();
-        $data = DeviceResource::collection($devices);
+        $data = DeviceESPResource::collection($devices);
         return response()->json(['data' => $data]);
     }
 

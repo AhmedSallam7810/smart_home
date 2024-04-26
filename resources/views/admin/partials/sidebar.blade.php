@@ -6,7 +6,7 @@
       <span class="brand-text font-weight-light">admin</span>
     </a> --}}
     <a href="index3.html" class="brand-link d-flex justify-content-center">
-        <span class="brand-text font-weight-light"><b>Con</b> Tech</span>
+        <span class="brand-text font-weight-light">Con<b>Tech</b></span>
         </a>
 
 
@@ -19,7 +19,7 @@
     <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
     </div>
     <div class="info">
-    <a href="#" class="d-block">Admin user</a>
+    <a href="#" class="d-block">Admin User</a>
     </div>
     </div>
 
@@ -84,7 +84,7 @@
                         </a>
                         </li>
 
-                        <li  @class([
+                        {{-- <li  @class([
                             "nav-item",
                             Request::routeIs([])?'bg-secondary':'',
                         ])>
@@ -96,7 +96,7 @@
                                                         device types
                                                     </p>
                             </a>
-                            </li>
+                            </li> --}}
 
 
         </ul>

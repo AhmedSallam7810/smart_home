@@ -29,8 +29,8 @@ class TypeRequest extends FormRequest
         }
         elseif($this->method()==='PUT'){
             return [
-                'en_name'=>['required'],
-                'ar_name'=>['required'],
+                'en_name'=>[''],
+                'ar_name'=>[''],
                 'image'=>['file'],
                 'show_in_app'=>''
 

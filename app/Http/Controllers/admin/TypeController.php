@@ -98,7 +98,6 @@ class TypeController extends Controller
         // if(!$type){
         //     return $this->apiResponse('',"Type not found");
         // }
-
         $updated_data=$request->validated();
 
         $image=$request->file('image');

@@ -148,10 +148,13 @@
 <script>
     $(document).ready(function() {
         $('.switch-show-in-app').click(function() {
-            var checked = $(this).prop('checked');
+            var status = $(this).prop('checked')?1:0;
             var type_id=$(this).data('id');
             var route_url = '{{ route("admin.types.update", ":parameter") }}';
             route_url = route_url.replace(':parameter', type_id);
+            console.log(route_url);
+
+            console.log(status);
 
             $.ajax({
                 url: route_url,
@@ -159,14 +162,12 @@
                 data: {
                     '_token': '{{ csrf_token() }}', // Include CSRF token for Laravel
                     '_method':'put',
-                    // 'show_in_app': 0,
+                    'show_in_app': status,
 
                 },
                 success: function(response) {
-                    // Handle the success response
                 },
                 error: function(xhr) {
-                    // Handle the error response
                 }
             });
         });
