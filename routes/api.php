@@ -40,7 +40,7 @@ Route::middleware('auth:user')->group(function () {
     Route::get('all-devices', [DeviceController::class, 'getAllDevices']);
     Route::get('types', [TypeController::class, 'index']);
     Route::get('types/devices', [TypeController::class, 'getDeviceTypes']);
-
+    Route::delete('account', [AuthApiController::class, 'deleteAccount']);
 
 });
 

@@ -84,7 +84,7 @@
                         </a>
                         </li>
 
-                        {{-- <li  @class([
+                        <li  @class([
                             "nav-item",
                             Request::routeIs([])?'bg-secondary':'',
                         ])>
@@ -96,7 +96,7 @@
                                                         device types
                                                     </p>
                             </a>
-                            </li> --}}
+                            </li>
 
 
         </ul>

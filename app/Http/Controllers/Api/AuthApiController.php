@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthApiController extends Controller
@@ -58,4 +60,43 @@ class AuthApiController extends Controller
             ]);
         }
     }
+
+    function deleteAccount(){
+
+
+        DB::beginTransaction();
+
+        try {
+            foreach( auth()->user()->rooms as $room){
+
+                foreach($room->devices as $device){
+                    $device->delete();
+                }
+                $room->delete();
+            }
+            auth()->user()->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'message' => "account deleted successfully",
+
+            ]);
+
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => $e->getMessage(),
+
+            ],400);
+        }
+
+    }
+
 }
