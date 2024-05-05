@@ -56,7 +56,7 @@
                 <tr>
                     <th style="vertical-align: middle;">{{$loop->index+1}}</th>
                     <td style="vertical-align: middle;" class="w-10">
-                        <img src="{{url($type->image_path)}}" class="img-fluid img-thumbnail" alt="Sheep">
+                        <img src="{{url($type->image_path)}}" class="img-fluid img-thumbnail" alt="img">
                     </td >
                     <td style="vertical-align: middle;">{{$type->en_name}}</td>
                     <td style="vertical-align: middle;">{{$type->ar_name}}</td>
