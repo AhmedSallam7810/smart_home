@@ -14,6 +14,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{url('dist/css/adminlte.min.css')}}">
 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -93,5 +96,51 @@
 <script src="{{url('dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{url('dist/js/demo.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script>
+    toastr.options.timeOut = 3000;
+
+    @if (Session::has('success'))
+        toastr.success("{{ Session::get('success') }}");
+    @elseif (Session::has('error'))
+        toastr.error("{{ Session::get('error') }}");
+
+
+    //     var type = "{{ Session::get('alert-type', 'info') }}"
+    //     switch (type) {
+    //         case 'info':
+
+    //             toastr.options.timeOut = 3000;
+    //             toastr.info("{{ Session::get('message') }}");
+
+    //             break;
+    //         case 'success':
+
+    //             toastr.options.timeOut = 3000;
+    //             toastr.success("{{ Session::get('message') }}");
+
+
+    //             break;
+    //         case 'warning':
+
+    //             toastr.options.timeOut = 3000;
+    //             toastr.warning("{{ Session::get('message') }}");
+
+
+    //             break;
+    //         case 'error':
+
+    //             toastr.options.timeOut = 3000;
+    //             toastr.error("{{ Session::get('message') }}");
+
+
+    //             break;
+    //     }
+
+    @endif
+</script>
+
 </body>
 </html>

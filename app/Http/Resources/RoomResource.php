@@ -20,7 +20,7 @@ class RoomResource extends JsonResource
             'user_id'=>$this->user_id,
             'type_id'=>$this->type_id,
             'type_en_name'=>$this->type->en_name,
-            'type_ar_name'=>$this->type->ar_name,
+            'type_ar_name'=>$this->type->ar_name??'',
             'type_image'=>url($this->type->image_path),
         ];
 

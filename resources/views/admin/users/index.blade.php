@@ -8,7 +8,7 @@
     <div class="row mb-2">
     <div class="col-sm-6">
     <span class="m-0 h2">Users </span>
-    <span class="h5">({{$users->count()}})</span>
+    <span class="h5">({{$users->total()}})</span>
     </div>
     <div class="col-sm-6">
     <ol class="breadcrumb float-sm-right">
@@ -35,6 +35,7 @@
               <tr>
                 <th class="col-1">#</th>
                 <th class="col-2">name</th>
+                <th class="col-1">id</th>
                 <th class="col-2">email</th>
                 <th class="col-2">rooms</th>
                 <th class="col-2">devices</th>
@@ -45,14 +46,18 @@
               </tr>
             </thead>
             <tbody>
+                @php
+                    $index = ($users->currentPage() - 1) * $users->perPage();
+                @endphp
                 @foreach ($users as $user )
 
                 <tr>
-                    <th style="vertical-align: middle;">{{$loop->index+1}}</th>
+                    <th style="vertical-align: middle;">{{$index+$loop->index+1}}</th>
                     {{-- <td style="vertical-align: middle;" class="w-10">
                         <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/sheep-3.jpg" class="img-fluid img-thumbnail" alt="Sheep">
                     </td > --}}
                     <td style="vertical-align: middle;">{{$user->name}}</td>
+                    <td style="vertical-align: middle;">{{$user->id}}</td>
                     <td style="vertical-align: middle;">{{$user->email}}</td>
                     <td style="vertical-align: middle;">{{count($user->rooms)}}</td>
                     <td style="vertical-align: middle;">{{count($user->devices)}}</td>

@@ -25,8 +25,8 @@ return new class extends Migration
 
         Admin::create([
             'name'=>'admin',
-            'email'=>'admin@gmail.com',
-            'password'=>Hash::make('password')
+            'email'=>'admin@contech.com',
+            'password'=>Hash::make('adminConTech@#$')
         ]);
     }
 

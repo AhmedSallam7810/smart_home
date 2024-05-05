@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\AuthController;
+use App\Http\Controllers\admin\DeviceTypeController;
 use App\Http\Controllers\admin\TypeController;
 use App\Http\Controllers\admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ Route::prefix('admin')->group(function(){
 
         Route::get('/', [AdminController::class,'index'])->name('admin');
         Route::resource('types',TypeController::class)->names('admin.types');
+        Route::resource('device-types',DeviceTypeController::class)->names('admin.device.types');
         Route::resource('users',UserController::class)->names('admin.users');
 
     });

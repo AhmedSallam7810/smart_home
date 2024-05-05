@@ -13,16 +13,16 @@ use App\Http\Helpers\ImageUploader;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Session;
 
-class TypeController extends Controller
+class DeviceTypeController extends Controller
 {
     use ImageUploader;
     use ApiResponse;
 
     public function index()
     {
-        $types=Type::where('category',1)->get();
+        $types=Type::where('category',2)->get();
 
-        return view('admin.types.index',compact('types'));
+        return view('admin.device_types.index',compact('types'));
     }
 
 
@@ -42,12 +42,7 @@ class TypeController extends Controller
     }
     public function create()
     {
-
-        $types=Type::all();
-
-        return view('admin.types.create',compact('types'));
-
-
+        return view('admin.device_types.create');
     }
 
 
@@ -55,7 +50,7 @@ class TypeController extends Controller
     public function store(TypeRequest $request)
     {
         $data=$request->validated();
-        $data['category']=1;
+        $data['category']=2;
         if($request->show_in_app){
             $data['show_in_app']=1;
         }
@@ -63,31 +58,19 @@ class TypeController extends Controller
             $data['show_in_app']=0;
         }
 
-        $image=$request->file('image');
-        if($image){
-            $image_name=$this->storeimage($image,'types');
-            $data['image']=$image_name;
-        }
-        else{
-            $data['image']='default.jpg';
-        }
-
 
         $type=Type::create($data);
 
         Session::flash('success','Successfully Added');
 
-        return redirect()->route('admin.types.index');
+        return redirect()->route('admin.device.types.index');
     }
 
 
     public function edit($id)
     {
-
         $type=Type::find($id);
-
-        return view('admin.types.edit',compact('type'));
-
+        return view('admin.device_types.edit',compact('type'));
 
     }
 
@@ -102,12 +85,6 @@ class TypeController extends Controller
         // }
         $updated_data=$request->validated();
 
-        $image=$request->file('image');
-
-        if($image){
-            $image_name=$this->updateimage($image,'types',$type->image);
-            $updated_data['image']=$image_name;
-        }
 
         if($request->show_in_app){
             $updated_data['show_in_app']=1;
@@ -118,11 +95,9 @@ class TypeController extends Controller
 
         $type->update($updated_data);
 
+        Session::flash('success','Successfully updated');
 
-
-        Session::flash('success','Successfully Updated');
-
-        return redirect()->route('admin.types.index');
+        return redirect()->route('admin.device.types.index');
 
 
 
@@ -134,20 +109,15 @@ class TypeController extends Controller
     {
         $type = Type::find($id);
 
-        if(count($type->rooms)){
-
-            Session::flash('error','There are rooms with this type');
-            return redirect()->route('admin.types.index');
-        }
-
-        if($type->image!='default.jpg'){
-            $this->deleteimage($type->image,'types');
+        if(count($type->devices)){
+            Session::flash('error','there are devices with this type');
+            return redirect()->route('admin.device.types.index');
         }
 
         $type->delete();
+        Session::flash('success','Successfully Deleted');
 
-
-        return redirect()->route('admin.types.index')->with('success','Successfully Deleted');;
+        return redirect()->route('admin.device.types.index');
 
 
    }

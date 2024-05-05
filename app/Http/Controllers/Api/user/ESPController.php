@@ -52,10 +52,19 @@ class ESPController extends Controller
     {
 
         $user=User::find($user_id);
+        $room=Room::find($room_id);
         if(!$user){
             return response()->json([
             'error'=>'user not found'
             ],404);
+        }
+        if($room->config){
+            $room->update(['config'=>false]);
+
+            return response()->json([
+            'status'=>false,
+            'message'=>'config room'
+            ],400);
         }
 
         $rdata = $request->all();
@@ -88,6 +97,15 @@ class ESPController extends Controller
             return response()->json([
             'error'=>'has no permissions'
             ],403);
+        }
+
+        if($room->config){
+            $room->update(['config'=>false]);
+
+            return response()->json([
+            'status'=>false,
+            'message'=>'config room'
+            ],400);
         }
 
         $devices = Device::where('room_id', $room_id)->get();

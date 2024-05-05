@@ -34,6 +34,7 @@ Route::group(['middleware'=>'guest'],function(){
 
 Route::middleware('auth:user')->group(function () {
 
+    Route::post('rooms/config/{id}', [RoomController::class, 'config']);
     Route::resource('rooms', RoomController::class);
     Route::resource('room/{id}/devices', DeviceController::class)->only(['index','store']);
     Route::resource('devices', DeviceController::class)->except(['index','store']);

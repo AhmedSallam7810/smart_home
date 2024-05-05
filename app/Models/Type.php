@@ -23,5 +23,10 @@ class Type extends Model
 
         return $this->hasMany(Room::class);
     }
+    
+    public function devices(){
+
+        return $this->hasMany(Room::class);
+    }
 
 }

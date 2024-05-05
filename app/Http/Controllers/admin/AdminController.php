@@ -53,7 +53,8 @@ class AdminController extends Controller{
         'data' =>  $roomTotals,
     ];
 
-        return view('admin.index',compact('data','roomData','users','rooms','devices'));
+   
+     return view('admin.index',compact('data','roomData','users','rooms','devices'));
     }
 
 

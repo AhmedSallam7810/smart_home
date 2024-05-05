@@ -77,15 +77,42 @@ class RoomController extends Controller
 
         $updated_data = $request->validated();
 
-        $icon = $request->file('icon');
-
-        if ($icon) {
-            $icon_name = $this->updateImage($icon, 'rooms', $room->icon);
-            $updated_data['icon'] = $icon_name;
-        }
 
 
         $room->update($updated_data);
+
+        $data = RoomResource::make($room);
+        return $this->apiResponse($data, "updated data successfully");
+
+
+    }
+
+
+    public function config(Request $request, $id)
+    {
+
+        $room = Room::find($id);
+        if (!$room) {
+            return $this->apiResponse404('', "room not found");
+        }
+
+        if($room->user_id!=auth('user')->user()->id){
+
+            return $this->apiResponse404('', "not have permissions");
+
+        }
+
+        // $updated_data = $request->validated();
+
+        // $icon = $request->file('icon');
+
+        // if ($icon) {
+        //     $icon_name = $this->updateImage($icon, 'rooms', $room->icon);
+        //     $updated_data['icon'] = $icon_name;
+        // }
+
+
+        $room->update(['config'=>true]);
 
         $data = RoomResource::make($room);
         return $this->apiResponse($data, "updated data successfully");

@@ -24,6 +24,7 @@ class TypeRequest extends FormRequest
                 'en_name'=>['required'],
                 'ar_name'=>['required'],
                 'image'=>['file'],
+                'icon'=>['string'],
                 'show_in_app'=>''
             ];
         }
@@ -32,6 +33,7 @@ class TypeRequest extends FormRequest
                 'en_name'=>[''],
                 'ar_name'=>[''],
                 'image'=>['file'],
+                'icon'=>['string'],
                 'show_in_app'=>''
 
             ];

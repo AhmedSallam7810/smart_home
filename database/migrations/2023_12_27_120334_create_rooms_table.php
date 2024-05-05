@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('user_id');
             $table->bigInteger('type_id');
+            $table->boolean('config')->default(false);
             $table->timestamps();
         });
     }
