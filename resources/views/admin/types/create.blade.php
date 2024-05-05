@@ -51,7 +51,7 @@
                     </div>
 
 
-                        <img id="preview"  alt="Selected Image" src="{{url('uploads/types/default.png')}}"
+                        <img id="preview"  alt="Selected Image" src="{{url('uploads/types/default.jpg')}}"
                          class="img-fluid img-thumbnail  m-5" style="width: 20%;height:20%"  alt="Sheep">
 
                         <div class="custom-file col-6 mx-5">
@@ -70,7 +70,7 @@
                     <div class="card-footer ">
                         <div class="d-flex justify-content-between">
                         <button type='submit' class="btn btn-success">Save</button>
-                        <button href="{{route('admin.types.index')}}" class="btn btn-danger">Cancel</button>
+                        <a href="{{route('admin.types.index')}}" class="btn btn-danger">Cancel</a>
                         </div>
 
                         </div>

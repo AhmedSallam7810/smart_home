@@ -70,7 +70,7 @@
                     <div class="card-footer ">
                         <div class="d-flex justify-content-between">
                         <button type='submit' class="btn btn-success">Save</button>
-                        <button href="{{route('admin.device.types.index')}}" class="btn btn-danger">Cancel</button>
+                        <a href="{{route('admin.device.types.index')}}" class="btn btn-danger">Cancel</a>
                         </div>
 
                         </div>
