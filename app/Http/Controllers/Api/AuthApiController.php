@@ -5,18 +5,56 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\VerificationEmail;
+use App\Models\RoomUser;
 use App\Models\User;
+use App\Notifications\EmailNotification;
 use Exception;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Password;
 
 class AuthApiController extends Controller
 {
     public function register(RegisterRequest $request)
     {
+
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
+
+        if(isset($data['parent_id'])){
+
+            $parent_id=User::find($data['parent_id']);
+            if($parent_id){
+
+                $user->update(['parent_id'=>$data['parent_id']]);
+
+                foreach( $request['rooms'] as $room_id){
+                    RoomUser::create(['room_id'=>$room_id,'user_id'=>$user->id]);
+                }
+            }
+            else{
+                $user->delete();
+                return response()->json([
+                    'status' => false,
+                    'code' => 404,
+                    'data' => [],
+                    'message' => "parent id not found"
+                ]);
+            }
+
+        }
+        else{
+            event(new Registered($user));
+        }
+
+
         $token = $user->createToken('personal access token')->plainTextToken;
 
         return response()->json([
@@ -27,6 +65,7 @@ class AuthApiController extends Controller
 
         ]);
     }
+
 
     public function login(LoginRequest $request)
     {
@@ -67,13 +106,17 @@ class AuthApiController extends Controller
         DB::beginTransaction();
 
         try {
-            foreach( auth()->user()->rooms as $room){
+            if( !auth()->user()->parent_id){
 
-                foreach($room->devices as $device){
-                    $device->delete();
+                foreach( auth()->user()->rooms as $room){
+
+                    foreach($room->devices as $device){
+                        $device->delete();
+                    }
+                    $room->delete();
                 }
-                $room->delete();
             }
+
             auth()->user()->delete();
 
             DB::commit();
@@ -98,5 +141,73 @@ class AuthApiController extends Controller
         }
 
     }
+
+    public function verify_email($user_id, Request $request) {
+
+        if (!$request->hasValidSignature()) {
+            return response()->json(["msg" => "Invalid/Expired url provided."], 401);
+        }
+
+        $user = User::findOrFail($user_id);
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+
+        return view('user.successVerification');
+    }
+
+    public function forget_password(Request $request) {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+        return $status === Password::RESET_LINK_SENT
+                    ? response()->json([
+                        'status' => true,
+                        'code' => 200,
+                        'message' => "reset email sent successfully",
+
+                    ])
+                    : response()->json([
+                        'status' => true,
+                        'code' => 404,
+                        'message' => "reset email error",
+
+                    ]);;
+    }
+    
+    public function show_reset_password_page(Request $request,string $token) {
+        return view('user.resetPassword', ['token' => $token,'request' => $request]);
+    }
+
+
+
+    public function reset_password(Request $request) {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+                    ? view('user.successResetPassword')
+                    : "error";
+    }
+
 
 }

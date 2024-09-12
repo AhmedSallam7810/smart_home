@@ -10,6 +10,7 @@ use App\Models\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helpers\ImageUploader;
+use App\Jobs\UpdateDeviceStatusJob;
 use App\Models\Room;
 
 class DeviceController extends Controller
@@ -25,12 +26,9 @@ class DeviceController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->user_id!=auth('user')->user()->id){
-
+        if( !$room->users->contains(auth()->user())){
             return $this->apiResponse404('', "not have permissions");
-
         }
-
         $devices=$room->devices;
         $data = DeviceResource::collection($devices);
         return $this->apiResponse($data,"return data successfully");
@@ -38,9 +36,9 @@ class DeviceController extends Controller
 
     public function getAllDevices()
     {
-        $devices=Device::where('user_id',auth()->user()->id)->get();
-        $data = DeviceResource::collection($devices);
-        return $this->apiResponse($data,"return data successfully");
+        // $devices=Device::where('user_id',auth()->user()->id)->get();
+        // $data = DeviceResource::collection($devices);
+        return $this->apiResponse([],"return data successfully");
     }
 
 
@@ -53,7 +51,7 @@ class DeviceController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->user_id!=auth('user')->user()->id){
+        if($room->users[0]->id!=auth('user')->user()->id){
 
             return $this->apiResponse404('', "not have permissions");
 
@@ -62,7 +60,7 @@ class DeviceController extends Controller
         $data['name']=$request->name;
         $data['room_id']=$room_id;
         $data['type_id']=$request->type_id;
-        $data['user_id']=auth('user')->user()->id;
+        // $data['user_id']=auth('user')->user()->id;
         if($request->status){
             $data['status']=intval($request->status);
         }
@@ -89,10 +87,8 @@ class DeviceController extends Controller
             return $this->apiResponse404('',"Device not found");
         }
 
-        if($device->user_id!=auth('user')->user()->id){
-
+        if( !$device->room->users->contains(auth()->user())){
             return $this->apiResponse404('', "not have permissions");
-
         }
 
         $data = DeviceResource::make($device);
@@ -103,7 +99,7 @@ class DeviceController extends Controller
     }
 
 
-
+//certain user device
     public function update(Request $request, $device_id)
     {
 
@@ -113,11 +109,14 @@ class DeviceController extends Controller
             return $this->apiResponse404('',"Device not found");
         }
 
-        if($device->user_id!=auth('user')->user()->id){
+        if(!$request->has('status')){
+            if($device->room->users[0]->id!=auth('user')->user()->id){
 
-            return $this->apiResponse404('', "not have permissions");
+                return $this->apiResponse404('', "not have permissions");
 
+            }
         }
+
 
         $data=$request->all();
 
@@ -144,15 +143,40 @@ class DeviceController extends Controller
             return $this->apiResponse404('',"Device not found");
         }
 
-        if($device->user_id!=auth('user')->user()->id){
+
+        if($device->room->users[0]->id!=auth('user')->user()->id){
 
             return $this->apiResponse404('', "not have permissions");
 
         }
 
-        $device->delete();
+        $device->update(['active'=>0]);
         $data = DeviceResource::make($device);
-        return $this->apiResponse($data,"deleted data successfully");
+        return $this->apiResponse($data,"inactive device successfully");
+
+   }
+
+   public function timer($device_id,$minutes)
+   {
+
+
+       $device = Device::where('id',$device_id)->first();
+
+       if(!$device){
+           return $this->apiResponse404('',"Device not found");
+       }
+
+       if( !$device->room->users->contains(auth()->user())){
+           return $this->apiResponse404('', "not have permissions");
+       }
+
+       UpdateDeviceStatusJob::dispatch($device)->delay(now()->addMinutes(intval($minutes)));
+
+
+       return $this->apiResponse([],"timer works successfully");
+
+
 
    }
 }
+

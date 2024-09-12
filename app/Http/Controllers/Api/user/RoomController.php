@@ -11,6 +11,8 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helpers\ImageUploader;
+use App\Models\RoomUser;
+use App\Models\User;
 
 class RoomController extends Controller
 {
@@ -19,18 +21,23 @@ class RoomController extends Controller
 
     public function index()
     {
-        $rooms = Room::where('user_id', auth()->user()->id)->get();
+        $rooms = User::find(auth()->user()->id)->rooms;
         $data = RoomResource::collection($rooms);
         return $this->apiResponse($data, "return data successfully");
     }
 
-
+//need to protect from child users
     public function store(RoomRequest $request)
     {
         $data = $request->validated();
 
-        $data["user_id"] = auth()->user()->id;
+        if(auth('user')->user()->parent_id){
+            return $this->apiResponse404('', "not have permissions");
+        }
+
         $room = Room::create($data);
+
+        RoomUser::create(['room_id'=>$room->id,'user_id'=>auth()->user()->id]);
         // create room device
 
         // for ($i = 1; $i <= 6; $i++) {
@@ -48,13 +55,15 @@ class RoomController extends Controller
 
     public function show($id)
     {
-        $Room = Room::where('user_id', auth()->user()->id)
-            ->where('id', $id)->first();
-        if (!$Room) {
-            return $this->apiResponse404('', "Room not found");
+        $room = Room::find($id);
+        if (!$room) {
+            return $this->apiResponse404('', "room not found");
+        }
+        if( !$room->users->contains(auth()->user())){
+            return $this->apiResponse404('', "not have permissions");
         }
 
-        $data = RoomResource::make($Room);
+        $data = RoomResource::make($room);
         return $this->apiResponse($data, "return data successfully");
 
 
@@ -69,7 +78,8 @@ class RoomController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->user_id!=auth('user')->user()->id){
+
+        if($room->users[0]->id!=auth('user')->user()->id){
 
             return $this->apiResponse404('', "not have permissions");
 
@@ -96,7 +106,7 @@ class RoomController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->user_id!=auth('user')->user()->id){
+        if($room->users[0]->id!=auth('user')->user()->id){
 
             return $this->apiResponse404('', "not have permissions");
 
@@ -128,7 +138,7 @@ class RoomController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->user_id!=auth('user')->user()->id){
+        if($room->users[0]->id!=auth('user')->user()->id){
 
             return $this->apiResponse404('', "not have permissions");
 

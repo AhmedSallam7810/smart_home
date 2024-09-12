@@ -14,6 +14,7 @@ class Device extends Model
         'room_id' => 'integer',
         'type_id' => 'integer',
         'status' => 'integer',
+        'active' => 'integer'
     ];
 
     public function room(){

@@ -14,9 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->bigInteger('room_id');
-            $table->bigInteger('user_id');
+            // $table->bigInteger('user_id');
             $table->bigInteger('type_id');
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(0);//turn on or turn off
+            $table->integer('active')->default(1);//not active  instead of delete
             $table->timestamps();
         });
     }
