@@ -180,7 +180,7 @@ class DeviceController extends Controller
         $device->update(['job_id'=>$jobId]);
     //    $job=UpdateDeviceStatusJob::dispatch($device,$request['status'])->delay(now()->addMinutes(intval($request['minutes'])))->getJobId();
 
-       return $this->apiResponse([],'Timer work on '.$request['minutes'].' minutes');
+       return $this->apiResponse([],'Timer works on '.$request['minutes'].' minutes');
 
 
 
