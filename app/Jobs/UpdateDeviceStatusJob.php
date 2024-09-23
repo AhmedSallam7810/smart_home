@@ -16,10 +16,12 @@ class UpdateDeviceStatusJob implements ShouldQueue
      * Create a new job instance.
      */
     protected $device;
+    protected $status;
 
-    public function __construct($device)
+    public function __construct($device,$status)
     {
         $this->device=$device;
+        $this->status=$status;
     }
 
     /**
@@ -27,12 +29,7 @@ class UpdateDeviceStatusJob implements ShouldQueue
      */
     public function handle(): void
     {
-        if($this->device->status){
+       $this->device->update(['status'=>$this->status,'job_id'=>'']);
 
-            $this->device->update(['status'=>0]);
-        }
-        else{
-            $this->device->update(['status'=>1]);
-        }
     }
 }

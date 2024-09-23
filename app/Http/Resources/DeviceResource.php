@@ -15,10 +15,11 @@ class DeviceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" => $this->id,
             "name" => $this->name,
             "status" => $this->status,
             "active" => $this->active,
-            "id" => $this->id,
+            "set_timer"=>$this->job_id?1:0,
             'user_id'=>auth()->user()->id,
             'room_id'=>$this->room_id,
             'type_id'=>$this->type_id,

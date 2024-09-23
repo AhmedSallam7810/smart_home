@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Helpers\ImageUploader;
 use App\Jobs\UpdateDeviceStatusJob;
 use App\Models\Room;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 
 class DeviceController extends Controller
 {
@@ -156,7 +159,8 @@ class DeviceController extends Controller
 
    }
 
-   public function timer($device_id,$minutes)
+
+   public function setTimer(Request $request,$device_id)
    {
 
 
@@ -170,13 +174,30 @@ class DeviceController extends Controller
            return $this->apiResponse404('', "not have permissions");
        }
 
-       UpdateDeviceStatusJob::dispatch($device)->delay(now()->addMinutes(intval($minutes)));
+        $job = new UpdateDeviceStatusJob($device,$request['status']);
+        $job->delay(now()->addMinutes(intval($request['minutes'])));
+        $jobId = app(Dispatcher::class)->dispatch($job);
+        $device->update(['job_id'=>$jobId]);
+    //    $job=UpdateDeviceStatusJob::dispatch($device,$request['status'])->delay(now()->addMinutes(intval($request['minutes'])))->getJobId();
 
-
-       return $this->apiResponse([],"timer works successfully");
+       return $this->apiResponse([],'Timer work on '.$request['minutes'].' minutes');
 
 
 
    }
+
+   public function destroyTimer($device_id)
+   {
+    $job_id=Device::where('id',$device_id)->pluck('job_id')[0];
+
+    if(!$job_id){
+        return $this->apiResponse404('',"no timer on this device");
+    }
+    DB::table('jobs')->where('id', $job_id)->delete();
+    DB::table('devices')->where('id', $device_id)->update(['job_id'=>null]);
+    return $this->apiResponse([],'timer deleted successfully!');
+   }
+
+
 }
 

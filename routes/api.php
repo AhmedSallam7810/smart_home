@@ -52,7 +52,8 @@ Route::middleware('auth:user')->group(function () {
     Route::resource('rooms', RoomController::class);
     Route::resource('room/{id}/devices', DeviceController::class)->only(['index','store']);
     Route::resource('devices', DeviceController::class)->except(['index','store']);//add destroy to except
-    Route::put('timer/{id}/{minutes}', [DeviceController::class, 'timer']);
+    Route::put('timer/{id}', [DeviceController::class, 'setTimer']);
+    Route::delete('timer/{id}', [DeviceController::class, 'destroyTimer']);
     Route::get('all-devices', [DeviceController::class, 'getAllDevices']);
     Route::get('types', [TypeController::class, 'index']);
     Route::get('types/devices', [TypeController::class, 'getDeviceTypes']);

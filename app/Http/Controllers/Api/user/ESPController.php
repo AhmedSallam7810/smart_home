@@ -33,7 +33,7 @@ class ESPController extends Controller
             ],404);
         }
 
-        if( $room->user_id!=$user_id){
+        if( !$room->users->contains($user)){
             return response()->json([
             'error'=>'has no permissions'
             ],403);
@@ -93,7 +93,9 @@ class ESPController extends Controller
             ],404);
         }
 
-        if( $room->user_id!=$user_id){
+
+
+        if( !$room->users->contains($user)){
             return response()->json([
             'error'=>'has no permissions'
             ],403);
