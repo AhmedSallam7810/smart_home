@@ -28,32 +28,7 @@ class AuthApiController extends Controller
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
 
-        if(isset($data['parent_id'])){
-
-            $parent_id=User::find($data['parent_id']);
-            if($parent_id){
-
-                $user->update(['parent_id'=>$data['parent_id']]);
-
-                foreach( $request['rooms'] as $room_id){
-                    RoomUser::create(['room_id'=>$room_id,'user_id'=>$user->id]);
-                }
-            }
-            else{
-                $user->delete();
-                return response()->json([
-                    'status' => false,
-                    'code' => 404,
-                    'data' => [],
-                    'message' => "parent id not found"
-                ]);
-            }
-
-        }
-        else{
-            event(new Registered($user));
-        }
-
+        event(new Registered($user));
 
         $token = $user->createToken('personal access token')->plainTextToken;
 
@@ -177,7 +152,7 @@ class AuthApiController extends Controller
 
                     ]);;
     }
-    
+
     public function show_reset_password_page(Request $request,string $token) {
         return view('user.resetPassword', ['token' => $token,'request' => $request]);
     }

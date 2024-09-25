@@ -107,8 +107,6 @@
 </div>
     </section>
 </div>
-
-
 <script>
     var ctx = document.getElementById('areaChart1').getContext('2d');
     var myChart = new Chart(ctx, {

@@ -9,6 +9,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\user\ESPController;
+use App\Http\Controllers\Api\user\SubUserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -54,10 +55,11 @@ Route::middleware('auth:user')->group(function () {
     Route::resource('devices', DeviceController::class)->except(['index','store']);//add destroy to except
     Route::put('timer/{id}', [DeviceController::class, 'setTimer']);
     Route::delete('timer/{id}', [DeviceController::class, 'destroyTimer']);
-    Route::get('all-devices', [DeviceController::class, 'getAllDevices']);
+    // Route::get('all-devices', [DeviceController::class, 'getAllDevices']);
     Route::get('types', [TypeController::class, 'index']);
     Route::get('types/devices', [TypeController::class, 'getDeviceTypes']);
     Route::delete('account', [AuthApiController::class, 'deleteAccount']);
+    Route::resource('sub-users',SubUserController::class)->except('create','edit');
 
 });
 

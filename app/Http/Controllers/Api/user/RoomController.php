@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\user;
 
+use App\Events\ChangeDeviceStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\RoomRequest;

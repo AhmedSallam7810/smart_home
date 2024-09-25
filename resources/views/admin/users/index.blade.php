@@ -60,7 +60,13 @@
                     <td style="vertical-align: middle;">{{$user->id}}</td>
                     <td style="vertical-align: middle;">{{$user->email}}</td>
                     <td style="vertical-align: middle;">{{count($user->rooms)}}</td>
-                    <td style="vertical-align: middle;">{{count($user->devices)}}</td>
+                    @php
+                    $device_number=0;
+                        foreach ($user->rooms as $room) {
+                            $device_number=$device_number+count($room->devices);
+                        }
+                    @endphp
+                    <td style="vertical-align: middle;">{{$device_number}}</td>
                     {{--<td style="vertical-align: middle;">Otto</td>
                     <td style="vertical-align: middle; text-align: center;">
                         <div class="custom-control custom-switch">

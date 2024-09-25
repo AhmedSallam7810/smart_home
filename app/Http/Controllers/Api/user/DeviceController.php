@@ -37,12 +37,12 @@ class DeviceController extends Controller
         return $this->apiResponse($data,"return data successfully");
     }
 
-    public function getAllDevices()
-    {
-        // $devices=Device::where('user_id',auth()->user()->id)->get();
-        // $data = DeviceResource::collection($devices);
-        return $this->apiResponse([],"return data successfully");
-    }
+    // public function getAllDevices()
+    // {
+    //     // $devices=Device::where('user_id',auth()->user()->id)->get();
+    //     // $data = DeviceResource::collection($devices);
+    //     return $this->apiResponse([],"return data successfully");
+    // }
 
 
 
@@ -113,11 +113,15 @@ class DeviceController extends Controller
         }
 
         if(!$request->has('status')){
-            if($device->room->users[0]->id!=auth('user')->user()->id){
+            if(!$request->has('minutes')){
 
-                return $this->apiResponse404('', "not have permissions");
+                if($device->room->users[0]->id!=auth('user')->user()->id){
 
+                    return $this->apiResponse404('', "not have permissions");
+
+                }
             }
+
         }
 
 
