@@ -22,31 +22,24 @@ class RoomController extends Controller
 
     public function index()
     {
-        $rooms = User::find(auth()->user()->id)->rooms;
+        $rooms = User::find(auth()->user()->id)->roomsDevices->unique();
         $data = RoomResource::collection($rooms);
         return $this->apiResponse($data, "return data successfully");
     }
 
-//need to protect from child users
+    //need to protect from child users
     public function store(RoomRequest $request)
     {
         $data = $request->validated();
 
-        if(auth('user')->user()->parent_id){
+        if (auth('user')->user()->parent_id) {
             return $this->apiResponse404('', "not have permissions");
         }
 
         $room = Room::create($data);
 
-        RoomUser::create(['room_id'=>$room->id,'user_id'=>auth()->user()->id]);
+        RoomUser::create(['room_id' => $room->id, 'user_id' => auth()->user()->id]);
         // create room device
-
-        // for ($i = 1; $i <= 6; $i++) {
-        //     $device_data['user_id'] = auth()->user()->id;
-        //     $device_data['room_id'] = $room->id;
-        //     $device_data['name'] = "Switch " . $i;
-        //     $Device = Device::create($device_data);
-        // }
 
         $data = RoomResource::make($room);
 
@@ -60,14 +53,12 @@ class RoomController extends Controller
         if (!$room) {
             return $this->apiResponse404('', "room not found");
         }
-        if( !$room->users->contains(auth()->user())){
+        if (!$room->usersDevices->contains(auth()->user())) {
             return $this->apiResponse404('', "not have permissions");
         }
 
         $data = RoomResource::make($room);
         return $this->apiResponse($data, "return data successfully");
-
-
     }
 
 
@@ -80,10 +71,9 @@ class RoomController extends Controller
         }
 
 
-        if($room->users[0]->id!=auth('user')->user()->id){
+        if ($room->usersDevices[0]->id != auth('user')->user()->id) {
 
             return $this->apiResponse404('', "not have permissions");
-
         }
 
         $updated_data = $request->validated();
@@ -94,8 +84,6 @@ class RoomController extends Controller
 
         $data = RoomResource::make($room);
         return $this->apiResponse($data, "updated data successfully");
-
-
     }
 
 
@@ -107,10 +95,9 @@ class RoomController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->users[0]->id!=auth('user')->user()->id){
+        if ($room->usersDevices[0]->id != auth('user')->user()->id) {
 
             return $this->apiResponse404('', "not have permissions");
-
         }
 
         // $updated_data = $request->validated();
@@ -123,12 +110,10 @@ class RoomController extends Controller
         // }
 
 
-        $room->update(['config'=>true]);
+        $room->update(['config' => true]);
 
         $data = RoomResource::make($room);
         return $this->apiResponse($data, "updated data successfully");
-
-
     }
 
 
@@ -139,10 +124,9 @@ class RoomController extends Controller
             return $this->apiResponse404('', "room not found");
         }
 
-        if($room->users[0]->id!=auth('user')->user()->id){
+        if ($room->usersDevices[0]->id != auth('user')->user()->id) {
 
             return $this->apiResponse404('', "not have permissions");
-
         }
 
         if ($room->icon != 'default.png') {
@@ -152,6 +136,5 @@ class RoomController extends Controller
         $room->delete();
         $data = RoomResource::make($room);
         return $this->apiResponse($data, "deleted data successfully");
-
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $guarded = [];
     protected $casts = [
         'user_id' => 'integer',
         'room_id' => 'integer',
@@ -17,18 +17,28 @@ class Device extends Model
         'active' => 'integer'
     ];
 
-    public function room(){
+    public function room()
+    {
 
         return $this->belongsTo(Room::class);
     }
 
-    public function user(){
+    public function user()
+    {
 
         return $this->belongsTo(User::class);
     }
 
-    public function type(){
+    public function type()
+    {
 
         return $this->belongsTo(Type::class);
+    }
+
+
+    public function usersRooms()
+    {
+        return $this->belongsToMany(Room::class, 'room_user')
+            ->withPivot('user_id', 'created_at', 'updated_at');
     }
 }

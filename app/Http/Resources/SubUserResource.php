@@ -14,13 +14,13 @@ class SubUserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $sub_user_room=RoomResource::collection( $this->rooms);
+        $sub_user_room = RoomResource::collection($this->roomsDevices->unique());
         return [
-            "id"=>$this->id,
-            "name"=>$this->name,
-            "email"=> $this->email,
-            "parent_id"=>$this->parent_id,
-            "rooms"=>$sub_user_room
+            "id" => $this->id,
+            "name" => $this->name,
+            "email" => $this->email,
+            "parent_id" => $this->parent_id,
+            "rooms" => $sub_user_room
         ];
     }
 }

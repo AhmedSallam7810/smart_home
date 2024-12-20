@@ -17,25 +17,22 @@ class SubUserRequest extends FormRequest
     public function rules(): array
     {
 
-        if($this->method()=='POST'){
+        if ($this->method() == 'POST') {
             return [
-                'name'=>['required','string','max:255'],
-                'email'=>['required','email','unique:users,email','max:255'],
-                'password'=>['required','string','min:6'],
-                'parent_id'=>['required','exists:users,id'],
-                'rooms'=>['required','array', new SubUserRooms]
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'unique:users,email', 'max:255'],
+                'password' => ['required', 'string', 'min:6'],
+                'parent_id' => ['required', 'exists:users,id'],
+                'rooms' => ['required', 'array']
+            ];
+        } elseif ($this->method() == 'PUT') {
+            return [
+                'name' => ['nullable', 'string', 'max:255'],
+                'email' => ['nullable', 'email', 'unique:users,email', 'max:255'],
+                'password' => ['nullable', 'string', 'min:6'],
+                'parent_id' => ['nullable', 'exists:users,id'],
+                'rooms' => ['nullable', 'array', new SubUserRooms]
             ];
         }
-        elseif($this->method()=='PUT'){
-            return [
-                'name'=>['nullable','string','max:255'],
-                'email'=>['nullable','email','unique:users,email','max:255'],
-                'password'=>['nullable','string','min:6'],
-                'parent_id'=>['nullable','exists:users,id'],
-                'rooms'=>['nullable','array', new SubUserRooms]
-            ];
-        }
-
-
     }
 }

@@ -16,7 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, CanResetPasswordTrait ;
+    use HasApiTokens, HasFactory, Notifiable, CanResetPasswordTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -50,13 +50,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function rooms(){
+    // public function rooms(){
 
-        return $this->belongsToMany(Room::class,'room_user');
+    //     return $this->belongsToMany(Room::class,'room_user');
+    // }
+
+    public function roomsDevices()
+    {
+        return $this->belongsToMany(Room::class, 'room_user')
+            ->withPivot('device_id', 'created_at', 'updated_at');
     }
 
-    public function devices(){
+    // public function devices(){
 
-        return $this->hasMany(Device::class);
-    }
+    //     return $this->hasMany(Device::class);
+    // }
 }
