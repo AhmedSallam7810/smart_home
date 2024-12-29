@@ -72,17 +72,36 @@ class SubUserController extends Controller
     public function update(SubUserRequest $request, $id)
     {
 
-        $user = User::with('rooms')->where('id', $id)->first();
+        $user = User::where('id', $id)->first();
 
-        if ($user->parent_id != auth()->user()->id) {
-            return $this->apiResponse404('', "has no permissions");
+        if (!$user || $user->parent_id != auth()->user()->id) {
+            return $this->apiResponse404('', "Not Found");
         }
 
         $data = $request->except('rooms');
         $user->update($data);
 
         if ($request['rooms']) {
-            $user->rooms()->sync($request['rooms']);
+
+            $pivotData = [];
+            foreach ($request['rooms'] as $room) {
+                foreach ($room['devices'] as $device_id) {
+
+                    $device_obj = DB::table('room_user')->select('device_id')
+                        ->where('user_id', auth()->user()->id)->where('room_id', $room['room_id'])
+                        ->where('device_id', $device_id)->get();
+
+                    if ($device_obj && count($device_obj) > 0) {
+
+                        $pivotData[] = [
+                            'room_id' => $room['room_id'],
+                            'device_id' => $device_id,
+                        ];
+                    }
+                }
+            }
+
+            $user->roomsDevices()->sync($pivotData);
         }
 
         $updatedUser = SubUserResource::make($user);
@@ -90,15 +109,17 @@ class SubUserController extends Controller
         return $this->apiResponse($updatedUser, 'sub-user updated successfully!!');
     }
 
+
+
     public function destroy($id)
     {
 
-        $user = User::with('rooms')->where('id', $id)->first();
+        $user = User::where('id', $id)->first();
 
         if ($user->parent_id != auth()->user()->id) {
             return $this->apiResponse404('', "has no permissions");
         }
-        // $user->rooms()->detach(); not need that
+        // $user->roomsDevices()->detach(); not need that
         $user->delete();
         return $this->apiResponse($user, 'sub-user deleted successfully!!');
     }

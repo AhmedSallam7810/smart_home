@@ -24,9 +24,9 @@ return new class extends Migration
         });
 
         Admin::create([
-            'name'=>'admin',
-            'email'=>'admin@contech.com',
-            'password'=>Hash::make('adminConTech@#$')
+            'name' => env('ADMIN_USER_NAME'),
+            'email' => env('ADMIN_EMAIL'),
+            'password' => env('ADMIN_PASSWORD')
         ]);
     }
 
